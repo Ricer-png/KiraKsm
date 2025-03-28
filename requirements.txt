@@ -1,0 +1,7 @@
+beautifulsoup4>=4.11.1
+pydub>=0.25.1
+requests>=2.25.0
+requests-file>=1.5.1
+requests-html>=0.10.0
+selenium>=4.0.0
+pillow>=9.0.0

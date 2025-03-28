@@ -32,16 +32,16 @@ class BestdoriScraperUI:
         self.root.geometry(f"{self.window_width}x{self.window_height}+{x_cordinate}+{y_cordinate}")
         self.root.resizable(False, False)  # 禁止调整窗口大小
         self.root.attributes('-fullscreen', False)  # 禁止全屏
-        self.root.iconbitmap(resource_path(".\\source\\ksm.ico"))        
+        self.root.iconbitmap(resource_path(os.path.join("source", "ksm.ico")))        
 
         # 加载背景图片，并生成PhotoImage
-        bg_pil = Image.open(resource_path(".\\source\\bgd1.png")).convert("RGBA").resize((self.window_width, self.window_height))
+        bg_pil = Image.open(resource_path(os.path.join("source", "bgd1.png"))).convert("RGBA").resize((self.window_width, self.window_height))
         self.bg_tk = ImageTk.PhotoImage(bg_pil)
-        bg_pil2 = Image.open(resource_path(".\\source\\bgd2.png")).convert("RGBA").resize((self.window_width, self.window_height))
+        bg_pil2 = Image.open(resource_path(os.path.join("source", "bgd2.png"))).convert("RGBA").resize((self.window_width, self.window_height))
         self.bg_tk2 = ImageTk.PhotoImage(bg_pil2)
-        bg_pil3 = Image.open(resource_path(".\\source\\bgd3.png")).convert("RGBA").resize((self.window_width, self.window_height))
+        bg_pil3 = Image.open(resource_path(os.path.join("source", "bgd3.png"))).convert("RGBA").resize((self.window_width, self.window_height))
         self.bg_tk3 = ImageTk.PhotoImage(bg_pil3)
-        bg_pil4 = Image.open(resource_path(".\\source\\bgd4.png")).convert("RGBA").resize((self.window_width, self.window_height))
+        bg_pil4 = Image.open(resource_path(os.path.join("source", "bgd4.png"))).convert("RGBA").resize((self.window_width, self.window_height))
         self.bg_tk4 = ImageTk.PhotoImage(bg_pil4)
 
         # 创建Canvas作为背景承载
@@ -220,7 +220,7 @@ class BestdoriScraperUI:
             self.log_queue.put("1.本爬虫数据来自bestdori，为了不给网站运营方造成困扰，加入了很多time.sleep()，并且禁止并发。如果您认为太慢，请从 https://github.com/Ricer-png/KiraKsm 获取源码后自主修改。另外，请不要喷我代码质量差......")
             self.log_queue.put("\n2..wav格式文件为.mp3文件转码得到，音质相同，体积扩大5倍。尽量选择下载.mp3文件。")
             self.log_queue.put("\n3.下载.mp3格式文件后，再下载.wav格式文件，会从上次下载暂停处开始下载，反之同理。如果想从头下载，请删除角色名目录下的.json文件。")
-            self.log_queue.put("\n4.本程序仅供学习交流使用，禁止商用。")
+            self.log_queue.put("\n4.本程序仅供学习交流使用，禁止商用。感谢您的支持和理解。")
             self.log_queue.put("\n                                                                                 by 花笑川乐奈")
             self.log_queue.put("\n-----------------------------------------------------------------------------------------")
             return

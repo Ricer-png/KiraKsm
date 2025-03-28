@@ -194,10 +194,10 @@ class BestdoriScraper:
         os.makedirs(self.save_folder, exist_ok=True)
         if self.wav_flag.is_set():
             os.makedirs(self.save_wav_folder, exist_ok=True)
-            self.log_queue.put(f"开始收集 {self.kyara_name[1]} .wav格式区域故事语音数据...")
+            self.log_queue.put(f"开始收集 {self.kyara_name[1]} .wav格式卡面故事语音数据...")
         else:
             os.makedirs(self.save_card_audio_folder, exist_ok=True)
-            self.log_queue.put(f"开始收集 {self.kyara_name[1]} .mp3格式区域故事语音数据...")
+            self.log_queue.put(f"开始收集 {self.kyara_name[1]} .mp3格式卡面故事语音数据...")
 
         driver = self.setup_browser()
         self.select_jp_server(driver)
@@ -228,9 +228,9 @@ class BestdoriScraper:
                 self.progress_queue.put(completed / len([card_id for card_id in self.log_data.items()]))
 
             driver.quit()
-            self.log_queue.put(f"已成功收集 {self.kyara_name[1]} 所有卡片故事语音")
+            self.log_queue.put(f"已成功收集 {self.kyara_name[1]} 所有卡面故事语音")
         else:
-            self.log_queue.put(f"未找到 {self.kyara_name[1]} 有关的卡片故事音频数据")
+            self.log_queue.put(f"未找到 {self.kyara_name[1]} 有关的卡面故事音频数据")
             driver.quit()
             exit()
 

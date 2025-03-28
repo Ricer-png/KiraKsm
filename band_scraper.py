@@ -181,10 +181,10 @@ class BestdoriScraperBand:
         os.makedirs(self.save_folder, exist_ok=True)
         if self.wav_flag.is_set():
             os.makedirs(self.save_wav_folder, exist_ok=True)
-            self.log_queue.put(f"开始收集 {self.kyara_name[1]} .wav格式区域故事语音数据...")
+            self.log_queue.put(f"开始收集 {self.kyara_name[1]} .wav格式乐队故事语音数据...")
         else:
             os.makedirs(self.save_card_audio_folder, exist_ok=True)
-            self.log_queue.put(f"开始收集 {self.kyara_name[1]} .mp3格式区域故事语音数据...")
+            self.log_queue.put(f"开始收集 {self.kyara_name[1]} .mp3格式乐队故事语音数据...")
 
         driver = self.setup_browser()
         self.select_jp_server(driver)
