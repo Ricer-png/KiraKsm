@@ -20,7 +20,7 @@ class BestdoriScraperUI:
         self.wav_event = threading.Event()
 
         self.root = tk.Tk()
-        self.root.title("KiraKsm")
+        self.root.title("KiraKsm v1.0.1")
 
         self.window_width = 1000
         self.window_height = 700
