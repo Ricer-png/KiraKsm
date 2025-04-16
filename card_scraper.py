@@ -11,7 +11,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from pydub import AudioSegment
 from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
 from get_path import resource_path
 
 class BestdoriScraper:
@@ -25,7 +24,6 @@ class BestdoriScraper:
         self.log_data = {}
         self.card_url = "https://bestdori.com/info/cards"
         self.session = requests.Session()
-        self.session.headers.update({"User-Agent": UserAgent().random})
         if self.kyara_name:
             self.save_folder = os.path.join(os.getcwd(), self.kyara_name[2])
             self.save_card_audio_folder = os.path.join(self.save_folder, f"{self.kyara_name[2]}_mp3")

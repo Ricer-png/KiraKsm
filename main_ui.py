@@ -9,6 +9,7 @@ from card_scraper import run_scraper
 from band_scraper import run_scraper_band
 from area_scraper import run_scraper_area
 from audio_to_list import run_A_to_Z
+from separate_files import separate_files
 from get_path import resource_path
 
 class BestdoriScraperUI:
@@ -158,7 +159,15 @@ class BestdoriScraperUI:
             self.canvas.itemconfig(self.bg_canvas, image=self.bg_tk3)
             self.button.config(state=tk.DISABLED)
             self.extension_var.set(current_wav_flag)
-            self.log_queue.put("这是为GPT-SoVITS定制的功能\n\n\"目标路径\"指的是: \"训练模型时, 这些音频资源所在的文件夹绝对路径\"\n\n如: d:\\workspace\\source\\aya\\aya_sudio\n\n如果不打算移动上一步爬取的资源, 可以不填\n\n角色名为必填项, 用于获取资源当前所在的地址\n\n------------------------------------------")
+            self.log_queue.put("""
+        这是为GPT-SoVITS定制的生成索引文件功能\n\
+        \"目标路径\"指的是: \"训练模型时, 语音集所在文件夹的绝对路径\"\n\
+        如: d:\\workspace\\source\\aya\\aya_audio\n\
+        如果不打算移动上一步爬取的语音集到别的路径下, 可以不填\n
+        \"#号+角色名\"（如：#祥子）为新增的文件分离补丁\n\
+        用于从指定目录下分离出前缀为\"角色名_\"的语音\n
+        -----------------------------------------------------------------
+                               """)
 
     def freeze_radios(self):
         self.scraper_radio.config(state=tk.DISABLED)
@@ -289,11 +298,24 @@ class BestdoriScraperUI:
         if not target_name:
             return
         self.audio2list_button.config(state=tk.DISABLED)
-        threading.Thread(target=self.run_audio2list_thread, args=(target_name, target_path,), daemon=True).start()
+        if target_name.startswith('#'):
+            if target_path:
+                threading.Thread(target=self.run_separate_files, args=(target_name[1:], target_path,), daemon=True).start()
+            else:
+                self.log_queue.put("请指定文件目录")
+                self.audio2list_button.config(state=tk.NORMAL)
+        else:
+            threading.Thread(target=self.run_audio2list_thread, args=(target_name, target_path,), daemon=True).start()
 
     def run_audio2list_thread(self, target_name, target_path):
         try:
             run_A_to_Z(target_name, self.log_queue, target_path, self.wav_event)
+        finally:
+            self.audio2list_button.config(state=tk.NORMAL)
+
+    def run_separate_files(self, target_name, target_path):
+        try:
+            separate_files(target_name, target_path, self.log_queue)
         finally:
             self.audio2list_button.config(state=tk.NORMAL)
 
