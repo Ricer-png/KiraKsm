@@ -4,6 +4,8 @@ import json
 import time
 import requests
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,9 +16,7 @@ from get_path import resource_path
 
 '''
 不做筛选对所有数据进行遍历后分类储存
-
-start为起始ID
-end为终止ID
+start为起始ID end为终止ID
 restart_interval为浏览器重启间隔ID数
 save_interval为保存间隔
 max_workers为同时下载数
@@ -30,13 +30,11 @@ event: 1-291   中文语料截止 271  √
 main: 1-73  √
 
 '''
-VALID_SERVERS = ["cn", "jp"]  # 如果要加入 en 需要在角色名映射文件中添加英文服务器中的角色名 如yukina   这行代码没用到 纯醒目标识
+VALID_SERVERS = ["cn", "jp"]  # 如果要加入 en 需要在角色名映射文件中添加英文服务器中的角色名 如yukina  另外：这行代码没用到 纯醒目标识
 VALID_KEY_WORD = ["afterlive", "area", "band", "card", "event", "main"]   # 这行代码没用 醒目标识
 
-# server = 'jp' 才会下载音频
-
 class BestdoriScraper:
-    def __init__(self, key_word = "card", server = "jp", start=1, end=2193, restart_interval=500, save_interval=500, max_workers=8):
+    def __init__(self, key_word = "afterlive", server = "jp", start=1, end=8, restart_interval=500, save_interval=8, max_workers=8):
         self.key_word = key_word
         self.server = server
         self.start_ID = start
@@ -90,7 +88,13 @@ class BestdoriScraper:
     def _setup_browser(self):
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")
-        driver = webdriver.Chrome(options=options)
+        options.add_argument("--disable-gpu")
+        options.add_argument("--window-size=1920,1080")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=options)
         driver.get(self.start_url)
         WebDriverWait(driver, 10).until(lambda d: d.execute_script("return document.readyState") == "complete")
         time.sleep(self.sleep_time)

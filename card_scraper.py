@@ -5,6 +5,8 @@ import json
 import time
 import requests
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
@@ -45,7 +47,13 @@ class BestdoriScraper:
     def setup_browser(self):
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")
-        driver = webdriver.Chrome(options=options)
+        options.add_argument("--disable-gpu")
+        options.add_argument("--window-size=1920,1080")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=options)
         driver.get(self.card_url)
         WebDriverWait(driver, 10).until(lambda d: d.execute_script("return document.readyState") == "complete")
         return driver
@@ -171,7 +179,7 @@ class BestdoriScraper:
                         continue
 
                     audio_tag = block.find("a", class_="button is-small", href=True)
-                    audio_url = "https://bestdori.com" + audio_tag["href"] if audio_tag else "无"
+                    audio_url = "https://bestdori.com" + audio_tag["href"] if audio_tag else "None"
 
                     if audio_url:
                         file_name = re.sub(r'[\/:*?"<>|]', '', dialogue)
